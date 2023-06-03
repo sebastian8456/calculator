@@ -101,6 +101,6 @@ Button(content, text='%', command=lambda: clicked('%'), font=('Ariel', 16)).grid
 # TODO: 
     # Change / and * to look the same as on buttons
     # Fix syntax errors when operators are pressed before input
-    # Allow only 1 decimal on the screen
+    # Allow only 1 decimal on the screen.
 
 root.mainloop()
