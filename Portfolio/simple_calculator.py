@@ -1,10 +1,10 @@
-# Create a GUI-based simple calculator, 
+## Create a GUI-based simple calculator, 
 # which can perform basic arithmetic operations.
 from tkinter import *
 
 root = Tk()
 
-OPERATORS = ('/','*','+','-', '%')
+OPERATORS = ('÷','x','+','-', '%')
 
 # Expand the window
 root.geometry('350x500+150+300')
@@ -37,6 +37,7 @@ display.grid(columnspan=4, sticky='NSEW')
 
 # StringVar automatically updates the display when its contents change.
 stringvar = StringVar()
+stringvar.set("0")
 display.configure(textvariable=stringvar)
 
 
@@ -44,11 +45,13 @@ def clicked(digit):
     text = stringvar.get()
     if text.endswith(OPERATORS) and digit in OPERATORS:
         text = text[:-1] + digit
-    elif digit in OPERATORS:
-        stringvar.set(str(eval(text)) + digit)
+    elif text == '0' and digit.isdigit():
+        text = digit
+    elif digit in OPERATORS and text != '0':
+        stringvar.set(str(evaluate(text)) + digit)
         return
-    elif digit == 'C' or (text.endswith(OPERATORS) and digit in OPERATORS) or (digit == '0' and text == '') or digit in OPERATORS and text == '':
-        stringvar.set('')
+    elif digit == 'C' or (text.endswith(OPERATORS) and digit in OPERATORS) or digit in OPERATORS and text == '0':
+        stringvar.set('0')
         return
     else:
         text += digit
@@ -59,24 +62,32 @@ def equals(stringvar=stringvar):
     text = stringvar.get()
     text = text.rstrip(''.join(OPERATORS))
     if text != '':
-        stringvar.set(str(eval(text)))
+        stringvar.set(str(evaluate(text)))
         return
+    
+def evaluate(text):
+    text = text.replace('x', '*')
+    text = text.replace('÷', '/')
+    result = eval(text)
+    return result
+    
     
 def plus_minus(stringvar=stringvar):
     text = stringvar.get()
     if text.startswith('-'):
         text = text[1:]
     else:
-        text = str(eval(text))
+        text = str(evaluate(text))
         text = '-' + text
     stringvar.set(text)
     return
 
 
+
 # Operation buttons
 Button(content, text='=', command=equals, bg='Orange', activebackground='Orange', font=('Ariel', 16, 'bold')).grid(column=3, row=5, sticky='NSEW')
-Button(content, text='÷', command=lambda: clicked('/'), font=('Ariel', 16, 'bold')).grid(column=3, row=1, sticky='NSEW')
-Button(content, text='x', command=lambda: clicked('*'), font=('Ariel', 16, 'bold')).grid(column=3, row=2, sticky='NSEW')
+Button(content, text='÷', command=lambda: clicked('÷'), font=('Ariel', 16, 'bold')).grid(column=3, row=1, sticky='NSEW')
+Button(content, text='x', command=lambda: clicked('x'), font=('Ariel', 16, 'bold')).grid(column=3, row=2, sticky='NSEW')
 Button(content, text='-', command=lambda: clicked('-'), font=('Ariel', 16, 'bold')).grid(column=3, row=3, sticky='NSEW')
 Button(content, text='+', command=lambda: clicked('+'), font=('Ariel', 16, 'bold')).grid(column=3, row=4, sticky='NSEW')
 
@@ -95,12 +106,8 @@ Button(content, text='0', command=lambda: clicked('0'), font=('Ariel', 16)).grid
 # Misc buttons
 Button(content, text='.', command=lambda: clicked('.'), font=('Ariel', 16, 'bold')).grid(column=2, row=5, sticky='NSEW')
 Button(content, text='C', command=lambda: clicked('C'), font=('Ariel', 16, 'bold')).grid(column=0, row=1, sticky='NSEW')
-Button(content, text='+/-', command=plus_minus, font=('Ariel', 16)).grid(column=1, row=1, sticky='NSEW')
-Button(content, text='%', command=lambda: clicked('%'), font=('Ariel', 16)).grid(column=2, row=1, sticky='NSEW')
+Button(content, text='+/-', command=plus_minus, font=('Ariel', 16, 'bold')).grid(column=1, row=1, sticky='NSEW')
+Button(content, text='%', command=lambda: clicked('%'), font=('Ariel', 16, 'bold')).grid(column=2, row=1, sticky='NSEW')
 
-# TODO: 
-    # Change / and * to look the same as on buttons
-    # Fix syntax errors when operators are pressed before input
-    # Allow only 1 decimal on the screen
 
 root.mainloop()
