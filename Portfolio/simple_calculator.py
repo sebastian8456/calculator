@@ -106,7 +106,7 @@ Button(content, text='0', command=lambda: clicked('0'), font=('Ariel', 16)).grid
 # Misc buttons
 Button(content, text='.', command=lambda: clicked('.'), font=('Ariel', 16, 'bold')).grid(column=2, row=5, sticky='NSEW')
 Button(content, text='C', command=lambda: clicked('C'), font=('Ariel', 16, 'bold')).grid(column=0, row=1, sticky='NSEW')
-Button(content, text='+/-', command=plus_minus, font=('Ariel', 16, 'bold')).grid(column=1, row=1, sticky='NSEW')
+Button(content, text='+/-', command=plus_minus, font=('Ariel', 16, 'bold'), weight=1).grid(column=1, row=1, sticky='NSEW')
 Button(content, text='%', command=lambda: clicked('%'), font=('Ariel', 16, 'bold')).grid(column=2, row=1, sticky='NSEW')
 
 
